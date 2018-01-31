@@ -7,8 +7,8 @@
 # {{{ Set some vars
 
 solrManifest=$CATALINA_HOME/webapps/solr/META-INF/MANIFEST.MF
-solr3OptimizeURL='http://localhost:8080/solr/update?stream.body="<optimize/>"'
-solr4OptimizeURL='http://localhost:8080/solr/collection1/update?optimize=true'
+solr3OptimizeURL=http://localhost:8080/solr/update?stream.body="<optimize/>"
+solr4OptimizeURL=http://localhost:8080/solr/collection1/update?optimize=true
 myPid=$(echo $$)
 pidFile=/var/run/solr_optimizer.pid
 
@@ -62,7 +62,7 @@ sanityCheck()
 writeClearPid()
 {
   if [ "$1" -eq "0" ]; then
-    rm -rf $pidFile
+    rm $pidFile
   else
   # This will overwrite an old file if present. That's ok though.
     echo $myPid > $pidFile
