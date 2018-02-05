@@ -50,9 +50,14 @@ sanityCheck()
   which curl > /dev/null
   checkSafe $? "can't find curl"
 
-  # Check for solr where we think it is normallu installed
+  # Check for solr where we think it is normally installed
   if [ ! -f $solrManifest ]; then
-    checkSafe 1 "can not find solr"
+    if [ -f /etc/profile.d/fedora.sh ]; then
+      source /etc/profile.d/fedora.sh
+      solrManifest=$CATALINA_HOME/webapps/solr/META-INF/MANIFEST.MF
+      ls $solrManifest > /dev/null 2>&1
+      checkSafe $? "can not find solr"
+    fi
   fi
 }
 
