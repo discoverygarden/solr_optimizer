@@ -62,7 +62,7 @@ sanityCheck()
 writeClearPid()
 {
   if [ "$1" -eq "0" ]; then
-    rm $pidFile
+    rm -f $pidFile
   else
   # This will overwrite an old file if present. That's ok though.
     echo $myPid > $pidFile
