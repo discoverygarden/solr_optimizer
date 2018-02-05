@@ -55,12 +55,10 @@ sanityCheck()
     if [ -f /etc/profile.d/fedora.sh ]; then
       source /etc/profile.d/fedora.sh
       solrManifest=$CATALINA_HOME/webapps/solr/META-INF/MANIFEST.MF
-      ls $solrManifest > /dev/null 2>&1
-      checkSafe $? "can not find solr"
-    else
-      checkSafe 1 "can not find solr"
     fi
   fi
+  ls $solrManifest > /dev/null 2>&1
+  checkSafe $? "can not find solr"
 }
 
 # }}}
