@@ -63,7 +63,7 @@ if [ -f "$gsearch/fedoragsearch.properties" ]; then
   user=$(grep ^fedoragsearch.soapUser $gsearch/fedoragsearch.properties | grep -o '=\s*.*$' | sed -e 's/^=\s*//')
   pass=$(grep ^fedoragsearch.soapPass $gsearch/fedoragsearch.properties | grep -o '=\s*.*$' | sed -e 's/^=\s*//')
   url=$(grep ^fedoragsearch.soapBase $gsearch/fedoragsearch.properties | grep -o '=\s*.*$' | sed -e 's/services/rest/' | sed -e 's/^=\s*//')
-  find -L $namespace_dir -type f | sed -nr 's/.*info%3Afedora%2F(.*)/\1/p' | parallel --memfree ${MEM_BUFF}K --nice 10 --jobs ${JOBS} --gnu ./reindex_a_pid.sh $url $user $pass {}
+  find -L $namespace_dir -type f | sed -nr 's/.*info%3Afedora%2F(.*)/\1/p' | parallel --memfree ${MEM_BUFF}K --nice 10 --jobs ${JOBS} --gnu ./reindex_a_pid.sh $url $user \"$pass\" {}
 else
   echo "Unable to find the fedoragsearch.properties file given the GSsearch directory of $gsearch"
 fi
