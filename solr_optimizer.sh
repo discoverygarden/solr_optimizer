@@ -7,7 +7,7 @@
 # {{{ Set some vars
 
 if [ -z "$CATALINA_HOME" ]; then
-  test -f /etc/defaul/fedora && . /etc/default/fedora
+  test -f /etc/default/fedora && . /etc/default/fedora
 fi
 solrManifest=$CATALINA_HOME/webapps/solr/META-INF/MANIFEST.MF
 solr3OptimizeURL=http://localhost:8080/solr/update?stream.body="<optimize/>"
