@@ -33,8 +33,8 @@ fi
 
 if [ -f /etc/debian_version ]
   then
-    if [ -f "/etc/default/fedora-commons" ]; then
-      source /etc/default/fedora-commons
+    if [ -f "/etc/default/fedora" ]; then
+      source /etc/default/fedora
     fi
 elif [ -f /etc/redhat-release ]
   then
