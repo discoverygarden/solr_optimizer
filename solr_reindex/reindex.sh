@@ -78,7 +78,7 @@ if [ -f "$gsearch/fedoragsearch.properties" ]; then
     PID_LIST_COMMAND="cat $PID_LIST_FILE"
   fi
 
-  eval $PID_LIST_COMMAND | parallel --memfree ${MEM_BUFF}K --nice 10 --jobs ${JOBS} --gnu ./reindex_a_pid.sh $url $user $pass {}
+  eval $PID_LIST_COMMAND | parallel --memfree ${MEM_BUFF}K --retries 3 --nice 10 --jobs ${JOBS} --gnu ./reindex_a_pid.sh $url $user $pass {}
 
 else
   echo "Unable to find the fedoragsearch.properties file given the GSsearch directory of $gsearch"
