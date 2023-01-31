@@ -5,16 +5,21 @@ USAGE: $0 [OPITONS]
   -j [# of jobs]
       Number of jobs to run (default: CPU count+1 / 2 )
   -f [path to pid list file]
+  -l [Limit reindex to OBJ created within the last # of days]
+      E.g. -l 7 for OBJ created within the last 7 days
 EOT
 )
 
-while getopts ":j:f:" option; do
+while getopts ":j:f:l:" option; do
   case $option in
     j)
       JOBS_NUM=$OPTARG
       ;;
     f)
       PID_LIST_FILE=$OPTARG
+      ;;
+    l)
+      LIMIT_DAYS_AGO=$OPTARG
       ;;
     \?)
       echo "$USAGE" >&2
@@ -29,6 +34,11 @@ done
 
 JOBS_DEFAULT=$(expr \( $(find /sys/devices/system/cpu -maxdepth 1 -type d -regex '.*/cpu[0-9]+$' | wc -l) + 1 \) / 2)
 MEM_BUFF=$(expr $(grep MemTotal /proc/meminfo | awk '{print $2}') / 10)
+
+if [ -z "$LIMIT_DAYS_AGO" ]
+then
+      LIMIT_ARG="-mtime -$LIMIT_DAYS_AGO"
+fi
 
 if ! (hash parallel 2>/dev/null); then
   echo "parallel not found"
@@ -69,7 +79,7 @@ if [ -f "$gsearch/fedoragsearch.properties" ]; then
   url=$(grep ^fedoragsearch.soapBase $gsearch/fedoragsearch.properties | grep -o '=\s*.*$' | sed -e 's/services/rest/' | sed -e 's/^=\s*//')
 
   if [ -z ${PID_LIST_FILE+x} ]; then
-    PID_LIST_COMMAND="find -L $namespace_dir -type f | sed -nr 's/.*info%3Afedora%2F(.*)/\1/p'"
+    PID_LIST_COMMAND="find -L $namespace_dir -type f $LIMIT_ARG | sed -nr 's/.*info%3Afedora%2F(.*)/\1/p'"
   else
     if [ ! -f "$PID_LIST_FILE" ]; then
       echo "$PID_LIST_FILE does not exist"
