@@ -5,8 +5,8 @@ USAGE: $0 [OPITONS]
   -j [# of jobs]
       Number of jobs to run (default: CPU count+1 / 2 )
   -f [path to pid list file]
-  -l [Limit reindex to OBJ created within the last # of days]
-      E.g. -l 7 for OBJ created within the last 7 days
+  -l [Limit reindex to object(s) modified within the last # of days]
+      E.g. -l 7 for object(s) modified within the last 7 days
 EOT
 )
 
@@ -35,7 +35,7 @@ done
 JOBS_DEFAULT=$(expr \( $(find /sys/devices/system/cpu -maxdepth 1 -type d -regex '.*/cpu[0-9]+$' | wc -l) + 1 \) / 2)
 MEM_BUFF=$(expr $(grep MemTotal /proc/meminfo | awk '{print $2}') / 10)
 
-if [ -z "$LIMIT_DAYS_AGO" ]
+if [ ! -z "$LIMIT_DAYS_AGO" ]
 then
       LIMIT_ARG="-mtime -$LIMIT_DAYS_AGO"
 fi
